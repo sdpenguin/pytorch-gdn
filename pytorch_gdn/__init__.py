@@ -11,7 +11,7 @@ class LowerBound(Function):
     @staticmethod
     def forward(ctx, inputs, bound):
         b = torch.ones(inputs.size(), device=inputs.device)*bound
-        b = b.to(inputs.device)
+        # b = b.to(device)
         ctx.save_for_backward(inputs, b)
         return torch.max(inputs, b)
   
@@ -42,7 +42,7 @@ class GDN(nn.Module):
         self.inverse = inverse
         self.beta_min = beta_min
         self.gamma_init = gamma_init
-        self.reparam_offset = torch.tensor([reparam_offset], device=device)
+        self.reparam_offset = reparam_offset
 
         self.build(ch, torch.device(device))
   
