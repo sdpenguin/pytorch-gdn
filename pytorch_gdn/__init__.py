@@ -33,7 +33,6 @@ class GDN(nn.Module):
   
     def __init__(self,
                  ch,
-                 device,
                  inverse=False,
                  beta_min=1e-6,
                  gamma_init=.1,
@@ -44,19 +43,19 @@ class GDN(nn.Module):
         self.gamma_init = gamma_init
         self.reparam_offset = reparam_offset
 
-        self.build(ch, torch.device(device))
+        self.build(ch)
   
-    def build(self, ch, device):
+    def build(self, ch):
         self.pedestal = self.reparam_offset**2
         self.beta_bound = (self.beta_min + self.reparam_offset**2)**.5
         self.gamma_bound = self.reparam_offset
 
         # Create beta param
-        beta = torch.sqrt(torch.ones(ch, device=device)+self.pedestal)
+        beta = torch.sqrt(torch.ones(ch)+self.pedestal)
         self.beta = nn.Parameter(beta)
 
         # Create gamma param
-        eye = torch.eye(ch, device=device)
+        eye = torch.eye(ch)
         g = self.gamma_init*eye
         g = g + self.pedestal
         gamma = torch.sqrt(g)
