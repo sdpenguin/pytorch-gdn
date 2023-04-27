@@ -36,7 +36,8 @@ class GDN(nn.Module):
                  inverse=False,
                  beta_min=1e-6,
                  gamma_init=.1,
-                 reparam_offset=2**-18):
+                 reparam_offset=2**-18,
+                 device=None):
         super(GDN, self).__init__()
         self.inverse = inverse
         self.beta_min = beta_min
@@ -44,6 +45,7 @@ class GDN(nn.Module):
         self.reparam_offset = reparam_offset
 
         self.build(ch)
+        self.to(device)
   
     def build(self, ch):
         self.pedestal = self.reparam_offset**2
